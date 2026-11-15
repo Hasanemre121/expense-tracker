@@ -76,17 +76,17 @@ public class ExpenseService : IExpenseService
 
     public string ExportCsv()
     {
-        var sb = new StringBuilder("Id,Date,Category,Description,Amount
-");
+        var sb = new StringBuilder();
+        sb.AppendLine("Id,Date,Category,Description,Amount");
         foreach (var e in GetAll())
         {
-            var description = """ + e.Description.Replace(""", """") + """;
+            var description = "\"" + e.Description.Replace("\"", "\"\"") + "\"";
             sb.Append(e.Id).Append(',')
               .Append(e.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)).Append(',')
               .Append(e.Category).Append(',')
               .Append(description).Append(',')
-              .Append(e.Amount.ToString("F2", CultureInfo.InvariantCulture)).Append('
-');
+              .Append(e.Amount.ToString("F2", CultureInfo.InvariantCulture))
+              .AppendLine();
         }
         return sb.ToString();
     }
